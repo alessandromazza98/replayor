@@ -3,6 +3,7 @@ package replayor
 import (
 	"context"
 	"errors"
+	"math/big"
 	"sync/atomic"
 	"time"
 
@@ -41,7 +42,8 @@ func (r *Service) Start(ctx context.Context) error {
 	cCtx, cancelFunc := context.WithCancel(ctx)
 	r.benchmarkCancel = cancelFunc
 
-	currentBlock, err := r.clients.DestNode.BlockByNumber(ctx, nil)
+	// force the currentBlock to be the (benchmark start block - 1)
+	currentBlock, err := r.clients.SourceNode.BlockByNumber(ctx, big.NewInt(int64(r.cfg.BenchmarkStartBlock-1)))
 	if err != nil {
 		panic(err)
 	}
