@@ -151,6 +151,9 @@ func (r *Benchmark) addBlock(ctx context.Context, currentBlock strategies.BlockC
 		Timestamp: uint64(currentBlock.Time),
 	})
 
+	// insert extra data
+	envelope.ExecutionPayload.ExtraData = currentBlock.ExtraData
+
 	if err != nil {
 		l.Crit("get payload failed", "err", err, "payloadId", *result.PayloadID)
 	}

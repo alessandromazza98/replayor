@@ -25,6 +25,7 @@ type BlockCreationParams struct {
 	BeaconRoot   *common.Hash
 	FeeRecipient common.Address
 	Withdrawals  types.Withdrawals
+	ExtraData    []byte
 	validateInfo interface{}
 }
 
