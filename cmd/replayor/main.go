@@ -22,7 +22,6 @@ var (
 )
 
 func main() {
-	oplog.SetupDefaults()
 	oplog.SetGlobalLogHandler(log.LogfmtHandlerWithLevel(os.Stdout, log.LevelTrace))
 	app := cli.NewApp()
 	app.Flags = cliapp.ProtectFlags(config.Flags)
