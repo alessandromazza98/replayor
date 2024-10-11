@@ -169,6 +169,8 @@ func (r *Benchmark) addBlock(ctx context.Context, currentBlock strategies.BlockC
 		l.Crit("validation failed", "err", err, "executionPayload", *envelope.ExecutionPayload, "parentBeaconBlockRoot", envelope.ParentBeaconBlockRoot, "txnHashes", txnHash)
 	}
 
+	method := r.clients.EngineApi.EngineVersionProvider().NewPayloadVersion(uint64(envelope.ExecutionPayload.Timestamp))
+	log.Crit("method", "method", method)
 	status, err := r.clients.EngineApi.NewPayload(ctx, envelope.ExecutionPayload, envelope.ParentBeaconBlockRoot)
 	if err != nil {
 		l.Crit("new payload failed", "err", err)
