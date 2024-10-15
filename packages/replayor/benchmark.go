@@ -169,11 +169,20 @@ func (r *Benchmark) addBlock(ctx context.Context, currentBlock strategies.BlockC
 		l.Crit("validation failed", "err", err, "executionPayload", *envelope.ExecutionPayload, "parentBeaconBlockRoot", envelope.ParentBeaconBlockRoot, "txnHashes", txnHash)
 	}
 
-	log.Info("envelope", "executionPayload", envelope.ExecutionPayload)
-	log.Info("parentBeaconBlockRoot", "parentBeaconBlockRoot", envelope.ParentBeaconBlockRoot)
+	log.Info("envelope", "envelope", envelope)
 	method := r.clients.EngineApi.EngineVersionProvider().NewPayloadVersion(uint64(envelope.ExecutionPayload.Timestamp))
 	log.Info("method", "method", method)
-	status, err := r.clients.EngineApi.NewPayload(ctx, envelope.ExecutionPayload, envelope.ParentBeaconBlockRoot)
+
+	// extract the versioned hashes from all the transactions in the block
+	var versionedHashes []common.Hash
+	for _, txn := range txns {
+		blobHashes := txn.BlobHashes()
+		if blobHashes != nil {
+			versionedHashes = append(versionedHashes, blobHashes...)
+		}
+	}
+
+	status, err := r.clients.EngineApi.NewPayload(ctx, envelope.ExecutionPayload, versionedHashes, envelope.ParentBeaconBlockRoot)
 	if err != nil {
 		l.Crit("new payload failed", "err", err)
 	}
