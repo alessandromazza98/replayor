@@ -177,6 +177,8 @@ func (r *Benchmark) addBlock(ctx context.Context, currentBlock strategies.BlockC
 			versionedHashes = append(versionedHashes, blobHashes...)
 		}
 	}
+
+	status, err := r.clients.EngineApi.NewPayloadV3(ctx, envelope.ExecutionPayload, versionedHashes, envelope.ParentBeaconBlockRoot)
 	if err != nil {
 		l.Crit("new payload failed", "err", err)
 	}
