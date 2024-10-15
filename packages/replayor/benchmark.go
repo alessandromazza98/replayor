@@ -182,7 +182,7 @@ func (r *Benchmark) addBlock(ctx context.Context, currentBlock strategies.BlockC
 		}
 	}
 
-	status, err := r.clients.EngineApi.NewPayload(ctx, envelope.ExecutionPayload, versionedHashes, envelope.ParentBeaconBlockRoot)
+	status, err := r.clients.EngineApi.NewPayloadV3(ctx, envelope.ExecutionPayload, versionedHashes, envelope.ParentBeaconBlockRoot)
 	if err != nil {
 		l.Crit("new payload failed", "err", err)
 	}
