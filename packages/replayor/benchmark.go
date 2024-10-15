@@ -174,14 +174,14 @@ func (r *Benchmark) addBlock(ctx context.Context, currentBlock strategies.BlockC
 	log.Info("method", "method", method)
 
 	// extract the versioned hashes from all the transactions in the block
-	var versionedHashes []common.Hash
+	versionedHashes := []common.Hash{}
 	for _, txn := range txns {
 		blobHashes := txn.BlobHashes()
 		if blobHashes != nil {
 			versionedHashes = append(versionedHashes, blobHashes...)
 		}
 	}
-
+\
 	status, err := r.clients.EngineApi.NewPayloadV3(ctx, envelope.ExecutionPayload, versionedHashes, envelope.ParentBeaconBlockRoot)
 	if err != nil {
 		l.Crit("new payload failed", "err", err)
